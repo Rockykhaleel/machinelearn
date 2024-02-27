@@ -11,8 +11,21 @@ data = data[["G1","G2","G3","studytime","failures","absences"]]
 # print(data.head())
 predict = "G3"
 
-x = np.array(data.drop(["G3"],1))
+x = np.array(data.drop([predict],axis=1))
 
 y = np.array(data[predict])
 
-x_train, y_train, x_test, y_test = sklearn.model_selection.train_test_split(x,y, test_size=0.1)
+x_train, x_test, y_train, y_test = sklearn.model_selection.train_test_split(x,y, test_size=0.1)
+
+linear = linear_model.LinearRegression()
+linear.fit(x_train,y_train)
+
+acc = linear.score(x_test,y_test)
+print(acc)
+print("coefficient \n",linear.coef_)
+print("interseption \n", linear.intercept_)
+
+prediction = linear.predict(x_test)
+
+for x in range(len(prediction)):
+    print(prediction[x],x_test[x],y_test[x])
